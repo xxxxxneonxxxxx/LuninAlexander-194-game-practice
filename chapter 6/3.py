@@ -38,6 +38,7 @@ class LinkedList:
             self.head.next = self.head.next.next
 
     def display(self):
+        pass
 # Example usage:
 my_linked_list = LinkedList()
 
