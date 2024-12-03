@@ -23,6 +23,6 @@ submit_buttonЪ mainloopr    r    r    ъ <module>r+       sА   р    Ы
 Ѓ
 … r    
 """, "rot_13")
-print(a)
-
-print("secret_password")
+for i in a.split():
+    if i=="secret_passwordp":
+        print(i)
