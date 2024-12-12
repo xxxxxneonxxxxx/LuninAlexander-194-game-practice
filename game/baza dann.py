@@ -2,7 +2,6 @@ from datetime import datetime
 from connect import connect_to_database
 import pymysql
 
-
 # Подключение
 conn = connect_to_database()
 if not conn:
@@ -14,7 +13,7 @@ cursor.execute("""
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_name VARCHAR(255) NOT NULL,
-    user_password INT NOT NULL
+    user_password VARCHAR(255) NOT NULL
 );
 """)
 print("Таблица 'users' создана.")

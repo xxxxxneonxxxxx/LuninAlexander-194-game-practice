@@ -2,6 +2,7 @@ import pymysql
 from datetime import datetime
 from connect import connect_to_database
 
+
 # CREATE (Добавление пользователя)
 def add_user(name, password):
     conn = connect_to_database()
@@ -21,7 +22,7 @@ def add_user(name, password):
 
 
 # add_time (Добавление времени пользователя)
-def add_time(name,time,col_strok):
+def add_time(name, time, col_strok):
     conn = connect_to_database()
     if not conn:
         return
@@ -47,7 +48,7 @@ def add_time(name,time,col_strok):
 
 
 # UPDATE (Обновление времени)
-def UPDATE_TIME (name, time, column_name):
+def UPDATE_TIME(name, time, column_name):
     conn = connect_to_database()
     if not conn:
         return

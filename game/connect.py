@@ -1,12 +1,14 @@
 import pymysql
+import socket
+
 
 def connect_to_database():
     try:
         connection = pymysql.connect(
-            host="-",
-            user="-",
-            password="-",
-            database="-",
+            host="kosfaton.beget.tech",
+            user="kosfaton_aleksl",
+            password="WFDhjIOlM6P",
+            database="kosfaton_aleksl",
             port=3306
         )
 

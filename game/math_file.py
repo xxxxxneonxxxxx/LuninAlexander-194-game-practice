@@ -1,5 +1,8 @@
 import random
 
+nah_zna = []
+
+
 def chis(strok, stol, prav, lev):
     def stolb(s1, s2, s3, s4, s5, s6, s7, s8,
               stolb):  # формирование суммы в столбах: s1-s8 строки, stolb количество столбов
@@ -104,17 +107,23 @@ def chis(strok, stol, prav, lev):
         a6 = None
         a7 = None
         a8 = None
+
+        nah_zna = [a1.copy(), a2.copy(), a3.copy(), a4.copy(), a5.copy(), a6, a7, a8]
         a11 = (random_stolb(a1, a2, a3, a4, a5, a6, a7, a8, stol))
+
     if stol == 6:
         a1 = (play(6, prav, lev))
         a2 = (play(6, prav, lev))
         a3 = (play(6, prav, lev))
         a4 = (play(6, prav, lev))
-        a5 =(play(6, prav, lev))
+        a5 = (play(6, prav, lev))
         a6 = (play(6, prav, lev))
         a7 = None
         a8 = None
+        nah_zna = [a1.copy(), a2.copy(), a3.copy(), a4.copy(), a5.copy(), a6, a7, a8]
+
         a11 = (random_stolb(a1, a2, a3, a4, a5, a6, a7, a8, stol))
+
     if stol == 7:
         a1 = (play(7, prav, lev))
         a2 = (play(7, prav, lev))
@@ -124,7 +133,10 @@ def chis(strok, stol, prav, lev):
         a6 = (play(7, prav, lev))
         a7 = (play(7, prav, lev))
         a8 = None
+        nah_zna = [a1.copy(), a2.copy(), a3.copy(), a4.copy(), a5.copy(), a6, a7, a8]
+
         a11 = (random_stolb(a1, a2, a3, a4, a5, a6, a7, a8, stol))
+
     if stol == 8:
         a1 = (play(8, prav, lev))
         a2 = (play(8, prav, lev))
@@ -134,10 +146,11 @@ def chis(strok, stol, prav, lev):
         a6 = (play(8, prav, lev))
         a7 = (play(8, prav, lev))
         a8 = (play(8, prav, lev))
+        nah_zna = [a1.copy(), a2.copy(), a3.copy(), a4.copy(), a5.copy(), a6, a7, a8]
+
         a11 = (random_stolb(a1, a2, a3, a4, a5, a6, a7, a8, stol))
 
     for i in range(0, len(a11)):
-        print(a11[i])
         if i == 0: a1 = a11[i]
         if i == 1: a2 = a11[i]
         if i == 2: a3 = a11[i]
@@ -146,7 +159,7 @@ def chis(strok, stol, prav, lev):
         if i == 5: a6 = a11[i]
         if i == 6: a7 = a11[i]
         if i == 7: a8 = a11[i]
-        sum_col= (stolb(a1, a2, a3, a4, a5, a6, a7, a8, stol))
+        sum_col = (stolb(a1, a2, a3, a4, a5, a6, a7, a8, stol))
     g = []
     sum_str = []
     for i in a11:
@@ -162,8 +175,9 @@ def chis(strok, stol, prav, lev):
         if i == 5: a6 = g[i]
         if i == 7: a7 = g[i]
         if i == 8: a8 = g[i]
-        sim_str1=[]
+        sim_str1 = []
         for i in g:
             sim_str1.append(sum(i))
         sum_col1 = (stolb(a1, a2, a3, a4, a5, a6, a7, a8, stol))
-        return [[sum_col1],[sim_str1],g, [sum_col], [sum_str]]
+    print(nah_zna)
+    return [[sum_col1], [sim_str1], g, [sum_col], [sum_str], nah_zna]

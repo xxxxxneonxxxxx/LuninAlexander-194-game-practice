@@ -1,19 +1,11 @@
 from math_file import chis
 from button import button
-from draw_text import draw_text
 from mune import menu
 from vbr_chis import vbr
-from datetime import datetime
 from CRUD import *
 
-
-
-
-
-import sqlite3
 import sys
 import pygame
-import random
 
 # Инициализация Pygame
 pygame.init()  # Инициализация всех модулей Pygame
@@ -29,42 +21,60 @@ RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 LIGHT_BLUE = (173, 216, 230)  # Светло-голубой цвет для кнопок
 font = pygame.font.Font(None, 36)  # Шрифт для отображения текста
-screen_width =800  # Начальная ширина экрана
-screen_height = 800# Начальная высота экрана
+screen_width = 800  # Начальная ширина экрана
+screen_height = 800  # Начальная высота экрана
 # Глобальная переменная для хранения сгенерированных чисел
 generated_numbers = []
-in_menu=True
+in_menu = True
 # Цвета
 WHITE = (255, 255, 255)
 LIGHT_BLUE = (173, 216, 230)
 RED = (255, 0, 0)
+
+
 # Главная функция игры
 def game(user_name):
-    print(4123214121)
-    global screen, in_vbr,col,strok,mini,maxi
+    global screen, in_vbr, col, strok, mini, maxi
+    colons=col
+    stroki=strok
     buttons = []
+
     def recalculate_sums(matrix):
         row_sums = [sum(row) for row in matrix]
         col_sums = [sum(col) for col in zip(*matrix)]
         return row_sums, col_sums
+
     # Инициализация данных
+    def update_colors(current_sum_row, current_sum_col):
+        current_sum_row1 = [sum(row) for row in generated_matrix]
+        current_sum_col1 = [sum(col) for col in zip(*generated_matrix)]
+        for button_index, (_, _, _, btn_type, btn_index, _, _, btn_text) in enumerate(buttons):
+            if btn_type == "row_sum" and btn_index <= len(current_sum_row):
+                buttons[button_index][6] = GREEN if current_sum_row[btn_index] == current_sum_row1[
+                    btn_index] else LIGHT_BLUE
+            elif btn_type == "col_sum" and btn_index <= len(current_sum_col):
+                buttons[button_index][6] = GREEN if current_sum_col[btn_index] == current_sum_col1[
+                    btn_index] else LIGHT_BLUE
+
     generated_numbers = chis(col, strok, mini, maxi)
-    for i in range(len(generated_numbers)):
-        print(generated_numbers[i])
     generated_matrix = generated_numbers[2]
+    current_sum_row = generated_numbers[4][0]
+    current_sum_col = generated_numbers[3][0]
+
+    print(current_sum_row, current_sum_col)
     # Пересчет начальных сумм строк и столбцов
     sum_strok, sum_stolb = recalculate_sums(generated_matrix)
-    if (col ==6 or col==5) and (strok==5 or strok==6):
+    if (col == 6 or col == 5) and (strok == 5 or strok == 6):
         button_width = 55
         button_height = 55
         x_offset = 145
         y_offset = 145
-    if (col ==6 or col==7 ) and (strok==7):
+    if (col == 6 or col == 7) and (strok == 7):
         button_width = 55
         button_height = 55
         x_offset = 153
         y_offset = 155
-    if (col ==8 or col==7 ) and (strok==8):
+    if (col == 8 or col == 7) and (strok == 8):
         button_width = 55
         button_height = 55
         x_offset = 148
@@ -77,26 +87,34 @@ def game(user_name):
             button_rect = button(screen, button_x, button_y, button_width, button_height, LIGHT_BLUE, str(value))
             buttons.append([button_rect, button_x, button_y, 'value', row_index, col_index, LIGHT_BLUE, str(value)])
     # Создание кнопок сумм строк
-    for row_index, row_sum in enumerate(sum_strok):
+    for row_index, row_sum in enumerate(generated_numbers[4][0]):
         button_x_left = x_offset - (button_width + 10)
         button_y = y_offset + row_index * (button_height + 10)
-        button_rect_left = button(screen, button_x_left, button_y, button_width, button_height, LIGHT_BLUE, str(row_sum))
-        buttons.append([button_rect_left, button_x_left, button_y, 'row_sum', row_index, 'left', LIGHT_BLUE, str(row_sum)])
+        button_rect_left = button(screen, button_x_left, button_y, button_width, button_height, LIGHT_BLUE,
+                                  str(row_sum))
+        buttons.append(
+            [button_rect_left, button_x_left, button_y, 'row_sum', row_index, 'left', LIGHT_BLUE, str(row_sum)])
         button_x_right = x_offset + len(generated_matrix[0]) * (button_width + 10)
-        button_rect_right = button(screen, button_x_right, button_y, button_width, button_height, LIGHT_BLUE, str(row_sum))
-        buttons.append([button_rect_right, button_x_right, button_y, 'row_sum', row_index, 'right', LIGHT_BLUE, str(row_sum)])
+        button_rect_right = button(screen, button_x_right, button_y, button_width, button_height, LIGHT_BLUE,
+                                   str(row_sum))
+        buttons.append(
+            [button_rect_right, button_x_right, button_y, 'row_sum', row_index, 'right', LIGHT_BLUE, str(row_sum)])
     # Создание кнопок сумм столбцов
-    for col_index, col_sum in enumerate(sum_stolb):
+    for col_index, col_sum in enumerate(generated_numbers[3][0]):
         button_x = x_offset + col_index * (button_width + 10)
         button_y_top = y_offset - (button_height + 10)
         button_rect_top = button(screen, button_x, button_y_top, button_width, button_height, LIGHT_BLUE, str(col_sum))
         buttons.append([button_rect_top, button_x, button_y_top, 'col_sum', col_index, 'top', LIGHT_BLUE, str(col_sum)])
         button_y_bottom = y_offset + len(generated_matrix) * (button_height + 10)
-        button_rect_bottom = button(screen, button_x, button_y_bottom, button_width, button_height, LIGHT_BLUE, str(col_sum))
-        buttons.append([button_rect_bottom, button_x, button_y_bottom, 'col_sum', col_index, 'bottom', LIGHT_BLUE, str(col_sum)])
+        button_rect_bottom = button(screen, button_x, button_y_bottom, button_width, button_height, LIGHT_BLUE,
+                                    str(col_sum))
+        buttons.append(
+            [button_rect_bottom, button_x, button_y_bottom, 'col_sum', col_index, 'bottom', LIGHT_BLUE, str(col_sum)])
+    update_colors(current_sum_row, current_sum_col)
+
     pygame.display.flip()
     # Главный игровой цикл
-    start_time=(datetime.now())
+    start_time = (datetime.now())
     while not in_vbr:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -120,6 +138,8 @@ def game(user_name):
                             # Пересчитываем суммы строк и столбцов
                             sum_strok, sum_stolb = recalculate_sums(generated_matrix)
 
+
+
                         elif index_type == 'required_sum_row' or index_type == 'required_sum_col':
                             # Удаляем кнопку из списка
                             buttons.pop(i)
@@ -129,7 +149,7 @@ def game(user_name):
                             if position == 'left' or position == 'right':
                                 row_index = index
                                 # Вычисляем необходимую сумму для победы
-                                required_sum = generated_numbers[4][0][row_index]
+                                required_sum = sum_strok[row_index]
                                 # Определяем координаты для новой кнопки
                                 if position == 'left':
                                     new_button_x = button_rect.x - (button_width + 10)
@@ -155,7 +175,7 @@ def game(user_name):
                             if position == 'top' or position == 'bottom':
                                 col_index = index
                                 # Вычисляем необходимую сумму для победы
-                                required_sum = generated_numbers[3][0][col_index]
+                                required_sum = sum_stolb[col_index]
                                 # Определяем координаты для новой кнопки
                                 if position == 'top':
                                     new_button_x = button_rect.x
@@ -178,8 +198,10 @@ def game(user_name):
                                     buttons.append(
                                         [new_button_rect, new_button_x, new_button_y, 'required_sum_col', col_index,
                                          position, LIGHT_BLUE, str(required_sum)])
+                    if index_type == "col_sum" or index_type == "row_sum":
+                        # Обновление цвета после проверки суммы
+                        update_colors(current_sum_row, current_sum_col)
 
-        # Проверяем, если все суммы строк и столбцов равны необходимым суммам
         row_sums_match = all(
             sum(generated_matrix[row]) == generated_numbers[4][0][row] for row in range(len(generated_matrix))
         )
@@ -187,44 +209,45 @@ def game(user_name):
             sum(generated_matrix[row][col] for row in range(len(generated_matrix))) == generated_numbers[3][0][col]
             for col in range(len(generated_matrix[0]))
         )
-
         # Если суммы строк и столбцов совпадают с необходимыми, выходим в меню
         if row_sums_match and col_sums_match:
-            end_time=(datetime.now())
-            timee=(end_time-start_time)
-            time_baza=''
-            timee=str(timee).split(":")
+            end_time = (datetime.now())
+            timee = (end_time - start_time)
+            time_baza = ''
+            timee = str(timee).split(":")
             for i in timee:
-                if i=='0' or i=='00':
+                if i == '0' or i == '00':
                     continue
-                if i==timee[2]:
-                    i=i[0]+i[1]+i[2]+i[3]+i[4]+i[5]
-                if timee[1][0]=="0":
-                    i=i[1]
-                time_baza+=':'+i
-            time_baza=time_baza[1:]
-            add_time(user_name,time_baza,str(col)+"X"+str(strok))
+                if i == timee[2]:
+                    i = i[0] + i[1] + i[2] + i[3] + i[4] + i[5]
+                if timee[1][0] == "0":
+                    i = i[1]
+                time_baza += ':' + i
+            time_baza = time_baza[1:]
+            print(col)
+            add_time(user_name, time_baza, str(colons) + "X" + str(stroki))
             PRINT_TABLE_TIME()
             # Здесь вызывается функция для перехода в меню или завершения игры
-            in_vbr=True
+            in_vbr = True
 
         # Обновление экрана
         screen.fill(WHITE)
         for button_rect, x, y, index_type, index, position, color, text in buttons:
-            if index_type == 'row_sum':
+            if index_type == 'required_sum_row':
                 label = str(sum_strok[index])
-            elif index_type == 'col_sum':
+            elif index_type == 'required_sum_col':
                 label = str(sum_stolb[index])
             else:
                 label = text
             button(screen, x, y, button_width, button_height, color, label)
         pygame.display.flip()
 
+
 # Основной цикл программы
-col=0
-strok=0
-mini=0
-maxi=0
+col = 0
+strok = 0
+mini = 0
+maxi = 0
 running = True
 in_menu = True  # Флаг для определения, нужно ли показывать меню
 in_vbr = False  # Флаг для определения, нужно ли показывать окно vbr
@@ -242,6 +265,4 @@ while running:
         game(h[1])  # Передаём нужные данные в game()
         in_vbr = True  # После игры возвращаемся в окно выбора
 
-
 pygame.quit()  # Завершение работы Pygame
-

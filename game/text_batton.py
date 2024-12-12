@@ -1,5 +1,6 @@
 import sys
 import pygame
+
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
@@ -9,10 +10,13 @@ LIGHT_BLUE = (173, 216, 230)
 
 # Шрифт для отображения текста
 font = pygame.font.Font(None, 36)
+
+
 def draw_text(text, font, color, surface, x, y):
     text_surface = font.render(text, True, color)
     text_rect = text_surface.get_rect(center=(x, y))
     surface.blit(text_surface, text_rect)
+
 
 def draw_button(surface, x, y, width, height, color, initial_text=""):
     text = initial_text  # Текст, который вводится

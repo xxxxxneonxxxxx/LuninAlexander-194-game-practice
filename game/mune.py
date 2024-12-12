@@ -30,17 +30,18 @@ input_boxes = {
 texts = {"nickname": "", "password": ""}
 active_box = None  # Текущая активная зона ввода
 
+
 def menu():
     running = True
     global active_box
     show_yes_button = False  # Флаг для отображения кнопки "yes"
     success_message = ""
     while running:
-        buttons=[]
+        buttons = []
         screen.fill(WHITE)
         draw_text("Game Menu", font, BLACK, screen, screen_width // 2, 50)
-        draw_text("login", font, BLACK, screen, screen_width // 2-145, screen_height // 2 -40)
-        draw_text("password", font, BLACK, screen, screen_width // 2-170, screen_height // 2 +20)
+        draw_text("login", font, BLACK, screen, screen_width // 2 - 145, screen_height // 2 - 40)
+        draw_text("password", font, BLACK, screen, screen_width // 2 - 170, screen_height // 2 + 20)
 
         # Отображение полей ввода
         for field, rect in input_boxes.items():
@@ -68,11 +69,11 @@ def menu():
 
         # Отображение кнопки "yes", если она активна
         if show_yes_button:
-            button_yes=button(screen,230,580,125,50,LIGHT_BLUE,"YES")
-            buttons.append([button_yes,'yes'])
+            button_yes = button(screen, 230, 580, 125, 50, LIGHT_BLUE, "YES")
+            buttons.append([button_yes, 'yes'])
         if show_yes_button:
-            button_yes=button(screen,450,580,125,50,LIGHT_BLUE,"NO")
-            buttons.append([button_yes,'no'])
+            button_yes = button(screen, 450, 580, 125, 50, LIGHT_BLUE, "NO")
+            buttons.append([button_yes, 'no'])
         pygame.display.flip()
         # Обработка событий
         for event in pygame.event.get():
@@ -87,26 +88,26 @@ def menu():
                     if rect.collidepoint(event.pos):
                         active_box = field
                         break
-                for button_rect,ind in buttons:
+                for button_rect, ind in buttons:
                     if button_rect.collidepoint(mouse_pos):
-                        if ind=="yes":
-                            add_user(texts["nickname"],texts['password'])
+                        if ind == "yes":
+                            add_user(texts["nickname"], texts['password'])
                             print(PRINT_TABLE_USERS())
-                            return [False,texts["nickname"]]
+                            return [False, texts["nickname"]]
                         else:
-                            show_yes_button=False
-                            success_message='enter existing user'
-                            buttons=[]
+                            show_yes_button = False
+                            success_message = 'enter existing user'
+                            buttons = []
                             screen.fill(WHITE)
-                            texts["nickname"]=''
-                            texts['password']=''
+                            texts["nickname"] = ''
+                            texts['password'] = ''
                 # Проверяем нажатие на кнопку подтверждения
                 if confirm_button.collidepoint(event.pos):
                     if not READ_PROV(texts["nickname"], texts["password"]):
                         success_message = "want to add an account"
                         show_yes_button = True  # Включаем отображение кнопки "yes"
                     else:
-                        return [False,texts["nickname"]]
+                        return [False, texts["nickname"]]
                 # Обработка нажатия на кнопку "yes"
             if event.type == pygame.KEYDOWN and active_box:
                 # Ввод текста
@@ -116,4 +117,3 @@ def menu():
                     texts[active_box] += event.unicode
 
         pygame.display.flip()
-
