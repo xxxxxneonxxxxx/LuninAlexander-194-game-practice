@@ -1,9 +1,12 @@
-def caesar_encrypt(text, ind):
-    b = ""
-    for char in text:
-        if char.isalpha():
-            base = ord('A') if char.isupper() else ord('a')
-            b += chr((ord(char) - base + ind) % 26 + base)
-        else:
-            b += char
-    return b
+def caesar_bruteforce(x):
+    for y in range(26):
+        z = ""
+        for w in x:
+            if w.isalpha():
+                v = 65 if w.isupper() else 97
+                z += chr((ord(w) - v - y) % 26 + v)
+            else:
+                z += w
+        print(f"{y}: {z}")
+x = ""
+caesar_bruteforce(x)
